@@ -1,0 +1,42 @@
+<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+  <defs>
+    <radialGradient id="litBgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1e3a5f" />
+      <stop offset="60%" stop-color="#10253d" />
+      <stop offset="100%" stop-color="#081422" />
+    </radialGradient>
+  </defs>
+
+  <circle cx="120" cy="120" r="115" fill="url(#litBgGrad)" stroke="#38bdf8" stroke-width="3" />
+  <path d="M 38 120 A 82 82 0 0 1 202 120" fill="none" stroke="#f8fafc" stroke-width="2.5" />
+
+  <path id="lTopP" d="M 36 120 A 84 84 0 0 1 204 120" fill="none" />
+  <text fill="#ffffff" font-size="16" font-weight="900" letter-spacing="4.5" font-family="'Cinzel', serif">
+    <textPath href="#lTopP" startOffset="50%" text-anchor="middle">LITERARY COUNCIL</textPath>
+  </text>
+  <g transform="translate(120, 138)">
+    <polygon points="0,22 -84,-42 -60,-68 0,-18" fill="#f97316" />
+    <polygon points="0,22 84,-42 60,-68 0,-18" fill="#0284c7" />
+    <polygon points="0,22 -68,-58 -44,-80 0,-24" fill="#eab308" />
+    <polygon points="0,22 68,-58 44,-80 0,-24" fill="#06b6d4" />
+    <polygon points="0,22 -44,-72 -20,-88 0,-30" fill="#f43f5e" />
+    <polygon points="0,22 44,-72 20,-88 0,-30" fill="#a855f7" />
+    <polygon points="0,22 -22,-82 0,-92 0,-32" fill="#38bdf8" />
+    <polygon points="0,22 22,-82 0,-92 0,-32" fill="#fb923c" />
+
+    <path d="M 0 20 Q -40 -5 -78 8 Q -78 -24 -40 -30 Q 0 -10 0 20 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+    <path d="M 0 20 Q 40 -5 78 8 Q 78 -24 40 -30 Q 0 -10 0 20 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" />
+    <line x1="-65" y1="-8" x2="-15" y2="-18" stroke="#cbd5e1" stroke-width="1.5" />
+    <line x1="-65" y1="-2" x2="-15" y2="-12" stroke="#cbd5e1" stroke-width="1.5" />
+    <line x1="15" y1="-18" x2="65" y2="-8" stroke="#cbd5e1" stroke-width="1.5" />
+    <line x1="15" y1="-12" x2="65" y2="-2" stroke="#cbd5e1" stroke-width="1.5" />
+    <ellipse cx="0" cy="20" rx="8" ry="5" fill="#dc2626" />
+    <line x1="0" y1="20" x2="0" y2="-30" stroke="#b91c1c" stroke-width="2.5" />
+  </g>
+  <g transform="translate(120, 192)">
+    <rect x="-70" y="-14" width="140" height="28" rx="4" fill="#0f172a" stroke="#f97316" stroke-width="2" />
+    <polygon points="-70,-14 -62,-14 -70,-6" fill="#f97316" />
+    <polygon points="70,-14 62,-14 70,-6" fill="#f97316" />
+    <text x="0" y="6" text-anchor="middle" fill="#ffffff" font-size="17" font-weight="900" font-family="'Cinzel', serif" letter-spacing="3">REC GONDA</text>
+  </g>
+</svg>

@@ -1,0 +1,72 @@
+<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+  <defs>
+    <linearGradient id="tcBarGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="25%" stop-color="#8b5cf6" />
+      <stop offset="50%" stop-color="#d946ef" />
+      <stop offset="70%" stop-color="#f97316" />
+      <stop offset="95%" stop-color="#eab308" />
+      <stop offset="100%" stop-color="#fef08a" />
+    </linearGradient>
+    <linearGradient id="tcStemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="30%" stop-color="#3b82f6" />
+      <stop offset="60%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#1e3a8a" />
+    </linearGradient>
+    <linearGradient id="tcCurveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316" />
+      <stop offset="35%" stop-color="#e11d48" />
+      <stop offset="65%" stop-color="#a855f7" />
+      <stop offset="90%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#d946ef" />
+    </linearGradient>
+    <filter id="tcGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <circle cx="120" cy="120" r="115" fill="#1b2a47" />
+  <circle cx="120" cy="120" r="115" fill="none" stroke="#2a3f66" stroke-width="1.5" />
+  <g stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M 58 75 L 35 75" />
+    <circle cx="30" cy="75" r="4.5" fill="none" stroke="#38bdf8" stroke-width="3" />
+    <path d="M 68 88 L 45 88 L 38 96 L 22 96" />
+    <circle cx="18" cy="96" r="4.5" fill="none" stroke="#38bdf8" stroke-width="3" />
+    <path d="M 62 108 L 32 108" />
+    <circle cx="28" cy="108" r="4.5" fill="none" stroke="#38bdf8" stroke-width="3" />
+  </g>
+  <g stroke="#facc15" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M 182 75 L 205 75 L 212 85 L 220 85" />
+    <circle cx="224" cy="85" r="4.5" fill="none" stroke="#facc15" stroke-width="3" />
+    <path d="M 165 90 L 195 90 L 202 96 L 222 96" />
+    <circle cx="226" cy="96" r="4.5" fill="none" stroke="#facc15" stroke-width="3" />
+    <path d="M 162 104 L 188 104" />
+    <circle cx="192" cy="104" r="4.5" fill="none" stroke="#facc15" stroke-width="3" />
+  </g>
+  <g stroke="#d946ef" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M 172 172 L 200 172" />
+    <circle cx="204" cy="172" r="4.5" fill="none" stroke="#d946ef" stroke-width="3" />
+    <path d="M 158 184 L 180 184 L 186 190 L 210 190" />
+    <circle cx="214" cy="190" r="4.5" fill="none" stroke="#d946ef" stroke-width="3" />
+  </g>
+  <path d="M 50 70 L 192 70 L 175 88 L 132 88 L 132 102 L 95 102 L 95 88 L 50 88 Z" fill="url(#tcBarGrad)" filter="url(#tcGlow)" />
+  <polygon points="192,70 198,72 205,70 199,76 202,83 194,78 188,81 190,74" fill="#ffffff" />
+  <path d="M 95 102 L 128 102 L 118 198 L 95 198 L 95 155 L 75 135 L 95 115 Z" fill="url(#tcStemGrad)" />
+  <path d="M 132 88 C 176 96 192 128 178 168 C 165 190 138 198 116 196 C 135 180 148 162 142 135 C 138 118 126 102 116 95 Z" fill="url(#tcCurveGrad)" />
+
+  <g stroke="#ffffff" stroke-width="2.5" fill="none" stroke-linecap="round">
+    <path d="M 106 110 L 106 148" />
+    <circle cx="106" cy="148" r="3.5" fill="#ffffff" stroke="none" />
+    <path d="M 116 155 L 116 182" />
+    <circle cx="116" cy="182" r="3" fill="#facc15" stroke="none" />
+  </g>
+
+  <g transform="translate(136, 160)">
+    <circle cx="0" cy="0" r="7" fill="#1b2a47" />
+    <polygon points="-4.5,4 4.5,4 6,14 -6,14" fill="#1b2a47" />
+  </g>
+  <circle cx="132" cy="132" r="4" fill="none" stroke="#fde047" stroke-width="2.5" />
+  <circle cx="120" cy="188" r="3" fill="#38bdf8" />
+</svg>

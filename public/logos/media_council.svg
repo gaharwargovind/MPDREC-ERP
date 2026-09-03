@@ -1,0 +1,61 @@
+<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+  <defs>
+    <radialGradient id="mediaBgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#141a29" />
+      <stop offset="65%" stop-color="#0a0e17" />
+      <stop offset="100%" stop-color="#020408" />
+    </radialGradient>
+    <linearGradient id="mediaNeonCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22d3ee" />
+      <stop offset="50%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="mediaChrome" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="45%" stop-color="#94a3b8" />
+      <stop offset="55%" stop-color="#475569" />
+      <stop offset="70%" stop-color="#cbd5e1" />
+      <stop offset="100%" stop-color="#ffffff" />
+    </linearGradient>
+    <linearGradient id="brushFill" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e0e7ff" />
+      <stop offset="40%" stop-color="#38bdf8" />
+      <stop offset="70%" stop-color="#c084fc" />
+      <stop offset="100%" stop-color="#f8fafc" />
+    </linearGradient>
+  </defs>
+
+  <circle cx="120" cy="120" r="115" fill="url(#mediaBgGrad)" />
+  <circle cx="120" cy="120" r="106" fill="none" stroke="url(#mediaNeonCyan)" stroke-width="4" />
+  <circle cx="120" cy="120" r="102" fill="none" stroke="#083344" stroke-width="1" />
+  <g transform="translate(24, 75) rotate(-18)">
+    <path d="M 0 0 C 15 -12 35 -5 42 15 C 48 35 32 60 12 55 C -2 50 -8 20 0 0 Z" fill="#334155" stroke="#94a3b8" stroke-width="2" />
+    <rect x="6" y="6" width="6" height="5" rx="1" fill="#f8fafc" />
+    <rect x="7" y="16" width="6" height="5" rx="1" fill="#f8fafc" />
+    <rect x="10" y="26" width="6" height="5" rx="1" fill="#f8fafc" />
+    <rect x="15" y="36" width="6" height="5" rx="1" fill="#f8fafc" />
+  </g>
+  <g transform="translate(160, 90)">
+    <rect x="0" y="6" width="48" height="34" rx="5" fill="#1e293b" stroke="#475569" stroke-width="2" />
+    <rect x="12" y="0" width="16" height="7" rx="2" fill="#334155" />
+    <circle cx="38" cy="12" r="3" fill="#ef4444" />
+    <circle cx="24" cy="23" r="14" fill="#0f172a" stroke="#64748b" stroke-width="2" />
+    <circle cx="24" cy="23" r="10" fill="#0284c7" stroke="#22d3ee" stroke-width="2" />
+    <polygon points="21,17 31,23 21,29" fill="#ffffff" />
+  </g>
+
+  <text x="120" y="94" text-anchor="middle" fill="url(#brushFill)" font-size="34" font-weight="900" font-family="sans-serif" letter-spacing="2">MEDIA</text>
+  <text x="120" y="126" text-anchor="middle" fill="url(#mediaChrome)" font-size="20" font-weight="900" font-family="sans-serif" letter-spacing="4">COUNCIL</text>
+  <text x="120" y="146" text-anchor="middle" fill="#94a3b8" font-size="12" font-weight="800" letter-spacing="2">MPDREC GONDA</text>
+  <text x="120" y="166" text-anchor="middle" fill="#f8fafc" font-size="12" font-style="italic" font-family="Georgia, serif">Your Story Begins Here.</text>
+  <g transform="translate(120, 192)">
+    <rect x="-6" y="-14" width="12" height="18" rx="6" fill="#0f172a" stroke="#22d3ee" stroke-width="2" />
+    <line x1="-4" y1="-8" x2="4" y2="-8" stroke="#22d3ee" stroke-width="1.5" />
+    <line x1="-4" y1="-3" x2="4" y2="-3" stroke="#22d3ee" stroke-width="1.5" />
+    <path d="M -10 -4 A 10 10 0 0 0 10 -4" fill="none" stroke="#22d3ee" stroke-width="2" />
+    <line x1="0" y1="6" x2="0" y2="12" stroke="#22d3ee" stroke-width="2" />
+    <line x1="-6" y1="12" x2="6" y2="12" stroke="#22d3ee" stroke-width="2" />
+    <path d="M -18 -8 L -18 0 M -24 -14 L -24 6 M -30 -6 L -30 -2" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" />
+    <path d="M 18 -8 L 18 0 M 24 -14 L 24 6 M 30 -6 L 30 -2" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" />
+  </g>
+</svg>

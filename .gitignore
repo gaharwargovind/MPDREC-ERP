@@ -1,0 +1,30 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+
+# Environment and Secret Files (Zero Client/Git Leakage)
+.env
+.env*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+
+# Cryptographic Keys, Certificates & Credentials
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+*.id_rsa
+*.id_ed25519
+credentials.json
+service-account*.json
+firebase-adminsdk*.json
+secrets/
+

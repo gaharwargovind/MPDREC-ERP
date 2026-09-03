@@ -1,0 +1,782 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  /* ========================================================================= */
+  /* THEME 1: IMPERIAL NAVY & ACADEMIC GOLD (Regal Oxford Academic)           */
+  /* ========================================================================= */
+  :root,
+  html[data-theme="imperial-navy"],
+  html.theme-imperial-navy,
+  html.theme-navy,
+  body[data-theme="imperial-navy"] {
+    /* Base Neutral System - Warm Editorial Academic Paper */
+    --bg-primary: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #ffffff;
+    --bg-subtle: #f1f5f9;
+    --text-main: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --border-subtle: #f1f5f9;
+    
+    /* Institutional Primary & Accent */
+    --brand-primary: #1e3a8a;
+    --brand-primary-hover: #172554;
+    --brand-primary-light: #eff6ff;
+    --brand-primary-border: #bfdbfe;
+    --brand-accent: #d97706;
+    --brand-accent-hover: #b45309;
+    --brand-accent-light: #fef3c7;
+    --brand-ring: rgba(30, 58, 138, 0.25);
+
+    /* Slate / Gray / Zinc Unified Scale (Clean Collegiate Oxford Slate) */
+    --color-slate-50: #f8fafc;
+    --color-slate-100: #f1f5f9;
+    --color-slate-200: #e2e8f0;
+    --color-slate-300: #cbd5e1;
+    --color-slate-400: #94a3b8;
+    --color-slate-500: #64748b;
+    --color-slate-600: #475569;
+    --color-slate-700: #334155;
+    --color-slate-800: #1e293b;
+    --color-slate-900: #0f172a;
+    --color-slate-950: #020617;
+
+    --color-gray-50: #f8fafc;
+    --color-gray-100: #f1f5f9;
+    --color-gray-200: #e2e8f0;
+    --color-gray-300: #cbd5e1;
+    --color-gray-600: #475569;
+    --color-gray-700: #334155;
+    --color-gray-800: #1e293b;
+    --color-gray-900: #0f172a;
+
+    --color-zinc-50: #f8fafc;
+    --color-zinc-100: #f1f5f9;
+    --color-zinc-800: #1e293b;
+    --color-zinc-900: #0f172a;
+
+    /* Blue & Indigo Scales */
+    --color-blue-50: #eff6ff;
+    --color-blue-100: #dbeafe;
+    --color-blue-200: #bfdbfe;
+    --color-blue-300: #93c5fd;
+    --color-blue-400: #60a5fa;
+    --color-blue-500: #3b82f6;
+    --color-blue-600: #1d4ed8;
+    --color-blue-700: #1e40af;
+    --color-blue-800: #1e3a8a;
+    --color-blue-900: #172554;
+    --color-blue-950: #0f172a;
+
+    --color-indigo-50: #eef2ff;
+    --color-indigo-100: #e0e7ff;
+    --color-indigo-500: #6366f1;
+    --color-indigo-600: #4f46e5;
+    --color-indigo-700: #4338ca;
+  }
+
+  .dark,
+  html.dark,
+  html.dark[data-theme="imperial-navy"],
+  html.dark.theme-imperial-navy,
+  body.dark[data-theme="imperial-navy"] {
+    --bg-primary: #0b0f19;
+    --bg-surface: #111827;
+    --bg-surface-elevated: #1a2234;
+    --bg-subtle: #1e293b;
+    --text-main: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --border-color: #1e293b;
+    --border-subtle: rgba(255, 255, 255, 0.07);
+
+    --brand-primary: #3b82f6;
+    --brand-primary-hover: #60a5fa;
+    --brand-primary-light: rgba(59, 130, 246, 0.15);
+    --brand-primary-border: rgba(59, 130, 246, 0.3);
+    --brand-accent: #f59e0b;
+    --brand-accent-hover: #fbbf24;
+    --brand-accent-light: rgba(245, 158, 11, 0.15);
+    --brand-ring: rgba(59, 130, 246, 0.35);
+
+    /* Slate Dark Scale for Navy */
+    --color-slate-50: #0b0f19;
+    --color-slate-100: #111827;
+    --color-slate-200: #1a2333;
+    --color-slate-300: #222f46;
+    --color-slate-400: #8b9cb3;
+    --color-slate-500: #a3b3c8;
+    --color-slate-600: #cbd5e1;
+    --color-slate-700: #1e2a3d;
+    --color-slate-800: #151e2e;
+    --color-slate-900: #0f1624;
+    --color-slate-950: #080c14;
+
+    --color-gray-800: #151e2e;
+    --color-gray-900: #0f1624;
+    --color-zinc-800: #151e2e;
+    --color-zinc-900: #0f1624;
+
+    --color-blue-500: #3b82f6;
+    --color-blue-600: #2563eb;
+    --color-blue-700: #1d4ed8;
+  }
+
+  /* ========================================================================= */
+  /* THEME 2: ROYAL EMERALD & BOTANICAL SAGE (Botanical Eco-Campus)           */
+  /* ========================================================================= */
+  html[data-theme="royal-emerald"],
+  html.theme-royal-emerald,
+  html.theme-emerald,
+  body[data-theme="royal-emerald"] {
+    --bg-primary: #f3f8f5;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #ffffff;
+    --bg-subtle: #e5f2eb;
+    --text-main: #062316;
+    --text-secondary: #1e4533;
+    --text-muted: #4b7a63;
+    --border-color: #c9e4d5;
+    --border-subtle: #e5f2eb;
+
+    --brand-primary: #064e3b;
+    --brand-primary-hover: #022c22;
+    --brand-primary-light: #ecfdf5;
+    --brand-primary-border: #a7f3d0;
+    --brand-accent: #d97706;
+    --brand-accent-hover: #b45309;
+    --brand-accent-light: #fef3c7;
+    --brand-ring: rgba(6, 78, 59, 0.25);
+
+    /* Rich Botanical Sage & Moss Scale */
+    --color-slate-50: #f3f8f5;
+    --color-slate-100: #e5f2eb;
+    --color-slate-200: #c9e4d5;
+    --color-slate-300: #a7d3bc;
+    --color-slate-400: #629c7e;
+    --color-slate-500: #3e775a;
+    --color-slate-600: #285941;
+    --color-slate-700: #1b4532;
+    --color-slate-800: #0f3322;
+    --color-slate-900: #072215;
+    --color-slate-950: #02110a;
+
+    --color-gray-50: #f3f8f5;
+    --color-gray-100: #e5f2eb;
+    --color-gray-200: #c9e4d5;
+    --color-gray-700: #1b4532;
+    --color-gray-800: #0f3322;
+    --color-gray-900: #072215;
+
+    --color-zinc-50: #f3f8f5;
+    --color-zinc-100: #e5f2eb;
+    --color-zinc-800: #0f3322;
+    --color-zinc-900: #072215;
+
+    --color-blue-50: #ecfdf5;
+    --color-blue-100: #d1fae5;
+    --color-blue-200: #a7f3d0;
+    --color-blue-300: #6ee7b7;
+    --color-blue-400: #34d399;
+    --color-blue-500: #10b981;
+    --color-blue-600: #059669;
+    --color-blue-700: #047857;
+    --color-blue-800: #064e3b;
+    --color-blue-900: #022c22;
+    --color-blue-950: #011913;
+
+    --color-indigo-50: #ecfdf5;
+    --color-indigo-100: #d1fae5;
+    --color-indigo-500: #14b8a6;
+    --color-indigo-600: #0d9488;
+    --color-indigo-700: #0f766e;
+  }
+
+  html[data-theme="royal-emerald"].dark,
+  html.dark[data-theme="royal-emerald"],
+  html.theme-royal-emerald.dark,
+  html.dark.theme-royal-emerald,
+  body.dark[data-theme="royal-emerald"] {
+    --bg-primary: #05120c;
+    --bg-surface: #0a1f15;
+    --bg-surface-elevated: #102e20;
+    --bg-subtle: #163c2c;
+    --text-main: #e8f7ee;
+    --text-secondary: #b6e2cb;
+    --text-muted: #6eb78e;
+    --border-color: rgba(52, 211, 153, 0.16);
+    --border-subtle: rgba(52, 211, 153, 0.08);
+
+    --brand-primary: #10b981;
+    --brand-primary-hover: #34d399;
+    --brand-primary-light: rgba(16, 185, 129, 0.15);
+    --brand-primary-border: rgba(16, 185, 129, 0.35);
+    --brand-ring: rgba(16, 185, 129, 0.35);
+
+    /* Forest Twilight Dark Slate Scale */
+    --color-slate-50: #05120c;
+    --color-slate-100: #0a1f15;
+    --color-slate-200: #102e20;
+    --color-slate-300: #163c2c;
+    --color-slate-400: #6eb78e;
+    --color-slate-500: #8fd0ab;
+    --color-slate-600: #b6e2cb;
+    --color-slate-700: #1b4733;
+    --color-slate-800: #112d20;
+    --color-slate-900: #0a1e15;
+    --color-slate-950: #05120c;
+
+    --color-gray-800: #112d20;
+    --color-gray-900: #0a1e15;
+    --color-zinc-800: #112d20;
+    --color-zinc-900: #0a1e15;
+
+    --color-blue-500: #10b981;
+    --color-blue-600: #059669;
+    --color-blue-700: #047857;
+  }
+
+  /* ========================================================================= */
+  /* THEME 3: COLLEGIATE CRIMSON & SAND (Ivy Distinction)                     */
+  /* ========================================================================= */
+  html[data-theme="crimson-heritage"],
+  html.theme-crimson-heritage,
+  html.theme-crimson,
+  body[data-theme="crimson-heritage"] {
+    --bg-primary: #faf5f6;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #ffffff;
+    --bg-subtle: #f5e8eb;
+    --text-main: #24070f;
+    --text-secondary: #4a1c25;
+    --text-muted: #824754;
+    --border-color: #ebd0d5;
+    --border-subtle: #f5e8eb;
+
+    --brand-primary: #881337;
+    --brand-primary-hover: #4c0519;
+    --brand-primary-light: #fff1f2;
+    --brand-primary-border: #fecdd3;
+    --brand-accent: #ca8a04;
+    --brand-accent-hover: #a16207;
+    --brand-accent-light: #fef9c3;
+    --brand-ring: rgba(136, 19, 55, 0.25);
+
+    /* Warm Antique Sandstone & Crimson Scale */
+    --color-slate-50: #faf5f6;
+    --color-slate-100: #f5e8eb;
+    --color-slate-200: #ebd0d5;
+    --color-slate-300: #ddb2b9;
+    --color-slate-400: #a86572;
+    --color-slate-500: #824754;
+    --color-slate-600: #662f3b;
+    --color-slate-700: #4d1c26;
+    --color-slate-800: #38101a;
+    --color-slate-900: #24070f;
+    --color-slate-950: #140207;
+
+    --color-gray-50: #faf5f6;
+    --color-gray-100: #f5e8eb;
+    --color-gray-200: #ebd0d5;
+    --color-gray-700: #4d1c26;
+    --color-gray-800: #38101a;
+    --color-gray-900: #24070f;
+
+    --color-zinc-50: #faf5f6;
+    --color-zinc-100: #f5e8eb;
+    --color-zinc-800: #38101a;
+    --color-zinc-900: #24070f;
+
+    --color-blue-50: #fff1f2;
+    --color-blue-100: #ffe4e6;
+    --color-blue-200: #fecdd3;
+    --color-blue-300: #fda4af;
+    --color-blue-400: #fb7185;
+    --color-blue-500: #f43f5e;
+    --color-blue-600: #be123c;
+    --color-blue-700: #9f1239;
+    --color-blue-800: #881337;
+    --color-blue-900: #4c0519;
+    --color-blue-950: #2a030d;
+
+    --color-indigo-50: #fff1f2;
+    --color-indigo-100: #ffe4e6;
+    --color-indigo-500: #e11d48;
+    --color-indigo-600: #be123c;
+    --color-indigo-700: #9f1239;
+  }
+
+  html[data-theme="crimson-heritage"].dark,
+  html.dark[data-theme="crimson-heritage"],
+  html.theme-crimson-heritage.dark,
+  html.dark.theme-crimson-heritage,
+  body.dark[data-theme="crimson-heritage"] {
+    --bg-primary: #120609;
+    --bg-surface: #1e0b10;
+    --bg-surface-elevated: #2e121a;
+    --bg-subtle: #3f1924;
+    --text-main: #fde8ec;
+    --text-secondary: #f6b3be;
+    --text-muted: #d96f83;
+    --border-color: rgba(244, 63, 94, 0.18);
+    --border-subtle: rgba(244, 63, 94, 0.08);
+
+    --brand-primary: #f43f5e;
+    --brand-primary-hover: #fb7185;
+    --brand-primary-light: rgba(244, 63, 94, 0.15);
+    --brand-primary-border: rgba(244, 63, 94, 0.35);
+    --brand-ring: rgba(244, 63, 94, 0.35);
+
+    /* Velvet Crimson Dark Slate Scale */
+    --color-slate-50: #120609;
+    --color-slate-100: #1e0b10;
+    --color-slate-200: #2e121a;
+    --color-slate-300: #3f1924;
+    --color-slate-400: #d96f83;
+    --color-slate-500: #eb91a2;
+    --color-slate-600: #f6b3be;
+    --color-slate-700: #4a1c28;
+    --color-slate-800: #2d0f17;
+    --color-slate-900: #1c080e;
+    --color-slate-950: #0f0307;
+
+    --color-gray-800: #2d0f17;
+    --color-gray-900: #1c080e;
+    --color-zinc-800: #2d0f17;
+    --color-zinc-900: #1c080e;
+
+    --color-blue-500: #f43f5e;
+    --color-blue-600: #e11d48;
+    --color-blue-700: #be123c;
+  }
+
+  /* ========================================================================= */
+  /* THEME 4: COBALT TECH & CYBER TEAL (Polytechnic Precision)                */
+  /* ========================================================================= */
+  html[data-theme="cobalt-tech"],
+  html.theme-cobalt-tech,
+  html.theme-cobalt,
+  body[data-theme="cobalt-tech"] {
+    --bg-primary: #f0f7ff;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #ffffff;
+    --bg-subtle: #e0efff;
+    --text-main: #04142b;
+    --text-secondary: #133966;
+    --text-muted: #3d71aa;
+    --border-color: #c4dffa;
+    --border-subtle: #e0efff;
+
+    --brand-primary: #1d4ed8;
+    --brand-primary-hover: #1e40af;
+    --brand-primary-light: #eff6ff;
+    --brand-primary-border: #bfdbfe;
+    --brand-accent: #0d9488;
+    --brand-accent-hover: #0f766e;
+    --brand-accent-light: #ccfbf1;
+    --brand-ring: rgba(29, 78, 216, 0.25);
+
+    /* Electric Blueprint Scale */
+    --color-slate-50: #f0f7ff;
+    --color-slate-100: #e0efff;
+    --color-slate-200: #c4dffa;
+    --color-slate-300: #9cc6f4;
+    --color-slate-400: #5590cf;
+    --color-slate-500: #316ea8;
+    --color-slate-600: #1c4e82;
+    --color-slate-700: #113661;
+    --color-slate-800: #0a2342;
+    --color-slate-900: #04142b;
+    --color-slate-950: #020a17;
+
+    --color-gray-50: #f0f7ff;
+    --color-gray-100: #e0efff;
+    --color-gray-200: #c4dffa;
+    --color-gray-700: #113661;
+    --color-gray-800: #0a2342;
+    --color-gray-900: #04142b;
+
+    --color-zinc-50: #f0f7ff;
+    --color-zinc-100: #e0efff;
+    --color-zinc-800: #0a2342;
+    --color-zinc-900: #04142b;
+
+    --color-blue-50: #f0fdfa;
+    --color-blue-100: #ccfbf1;
+    --color-blue-200: #99f6e4;
+    --color-blue-300: #5eead4;
+    --color-blue-400: #38bdf8;
+    --color-blue-500: #0ea5e9;
+    --color-blue-600: #0284c7;
+    --color-blue-700: #0369a1;
+    --color-blue-800: #1e40af;
+    --color-blue-900: #1e3a8a;
+    --color-blue-950: #0c1c49;
+
+    --color-indigo-50: #f0fdfa;
+    --color-indigo-100: #ccfbf1;
+    --color-indigo-500: #0ea5e9;
+    --color-indigo-600: #0284c7;
+    --color-indigo-700: #0369a1;
+  }
+
+  html[data-theme="cobalt-tech"].dark,
+  html.dark[data-theme="cobalt-tech"],
+  html.theme-cobalt-tech.dark,
+  html.dark.theme-cobalt-tech,
+  body.dark[data-theme="cobalt-tech"] {
+    --bg-primary: #050d18;
+    --bg-surface: #0a172a;
+    --bg-surface-elevated: #11233e;
+    --bg-subtle: #183359;
+    --text-main: #e2f0ff;
+    --text-secondary: #a4cdfc;
+    --text-muted: #5e9ef0;
+    --border-color: rgba(56, 189, 248, 0.2);
+    --border-subtle: rgba(56, 189, 248, 0.08);
+
+    --brand-primary: #38bdf8;
+    --brand-primary-hover: #7dd3fc;
+    --brand-primary-light: rgba(56, 189, 248, 0.15);
+    --brand-primary-border: rgba(56, 189, 248, 0.35);
+    --brand-ring: rgba(56, 189, 248, 0.35);
+
+    /* Cyber Telemetry Dark Scale */
+    --color-slate-50: #050d18;
+    --color-slate-100: #0a172a;
+    --color-slate-200: #11233e;
+    --color-slate-300: #183359;
+    --color-slate-400: #5e9ef0;
+    --color-slate-500: #8ec1fc;
+    --color-slate-600: #bfe0ff;
+    --color-slate-700: #1b3861;
+    --color-slate-800: #102440;
+    --color-slate-900: #09172a;
+    --color-slate-950: #040d18;
+
+    --color-gray-800: #102440;
+    --color-gray-900: #09172a;
+    --color-zinc-800: #102440;
+    --color-zinc-900: #09172a;
+
+    --color-blue-500: #38bdf8;
+    --color-blue-600: #0284c7;
+    --color-blue-700: #0369a1;
+  }
+
+  /* ========================================================================= */
+  /* THEME 5: OBSIDIAN GRAPHITE & BRONZE (Executive Architectural Minimal)     */
+  /* ========================================================================= */
+  html[data-theme="obsidian-bronze"],
+  html.theme-obsidian-bronze,
+  html.theme-obsidian,
+  body[data-theme="obsidian-bronze"] {
+    --bg-primary: #f5f5f6;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #ffffff;
+    --bg-subtle: #eaebee;
+    --text-main: #0f0f12;
+    --text-secondary: #2f3036;
+    --text-muted: #6b6d77;
+    --border-color: #d6d7dc;
+    --border-subtle: #eaebee;
+
+    --brand-primary: #18181b;
+    --brand-primary-hover: #09090b;
+    --brand-primary-light: #f4f4f5;
+    --brand-primary-border: #e4e4e7;
+    --brand-accent: #b45309;
+    --brand-accent-hover: #92400e;
+    --brand-accent-light: #fef3c7;
+    --brand-ring: rgba(24, 24, 27, 0.25);
+
+    /* Architectural Minimal Graphite Scale */
+    --color-slate-50: #f5f5f6;
+    --color-slate-100: #eaebee;
+    --color-slate-200: #d6d7dc;
+    --color-slate-300: #b9bac3;
+    --color-slate-400: #7b7d88;
+    --color-slate-500: #555761;
+    --color-slate-600: #3b3c43;
+    --color-slate-700: #27282d;
+    --color-slate-800: #18191d;
+    --color-slate-900: #0f0f12;
+    --color-slate-950: #050507;
+
+    --color-gray-50: #f5f5f6;
+    --color-gray-100: #eaebee;
+    --color-gray-200: #d6d7dc;
+    --color-gray-700: #27282d;
+    --color-gray-800: #18191d;
+    --color-gray-900: #0f0f12;
+
+    --color-zinc-50: #f5f5f6;
+    --color-zinc-100: #eaebee;
+    --color-zinc-800: #18191d;
+    --color-zinc-900: #0f0f12;
+
+    --color-blue-50: #f4f4f5;
+    --color-blue-100: #e4e4e7;
+    --color-blue-200: #d4d4d8;
+    --color-blue-300: #a1a1aa;
+    --color-blue-400: #71717a;
+    --color-blue-500: #52525b;
+    --color-blue-600: #27272a;
+    --color-blue-700: #18181b;
+    --color-blue-800: #09090b;
+    --color-blue-900: #000000;
+    --color-blue-950: #000000;
+
+    --color-indigo-50: #f4f4f5;
+    --color-indigo-100: #e4e4e7;
+    --color-indigo-500: #78716c;
+    --color-indigo-600: #57534e;
+    --color-indigo-700: #44403c;
+  }
+
+  html[data-theme="obsidian-bronze"].dark,
+  html.dark[data-theme="obsidian-bronze"],
+  html.theme-obsidian-bronze.dark,
+  html.dark.theme-obsidian-bronze,
+  body.dark[data-theme="obsidian-bronze"] {
+    --bg-primary: #08080a;
+    --bg-surface: #101014;
+    --bg-surface-elevated: #1a1a20;
+    --bg-subtle: #24242c;
+    --text-main: #fafafa;
+    --text-secondary: #d1d1d8;
+    --text-muted: #9b9ba6;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --border-subtle: rgba(255, 255, 255, 0.05);
+
+    --brand-primary: #e4e4e7;
+    --brand-primary-hover: #ffffff;
+    --brand-primary-light: rgba(228, 228, 231, 0.12);
+    --brand-primary-border: rgba(228, 228, 231, 0.3);
+    --brand-ring: rgba(228, 228, 231, 0.3);
+
+    /* Studio Obsidian Dark Scale */
+    --color-slate-50: #08080a;
+    --color-slate-100: #101014;
+    --color-slate-200: #1a1a20;
+    --color-slate-300: #24242c;
+    --color-slate-400: #9b9ba6;
+    --color-slate-500: #c1c1cb;
+    --color-slate-600: #e2e2ea;
+    --color-slate-700: #2c2c36;
+    --color-slate-800: #1c1c24;
+    --color-slate-900: #121218;
+    --color-slate-950: #08080a;
+
+    --color-gray-800: #1c1c24;
+    --color-gray-900: #121218;
+    --color-zinc-800: #1c1c24;
+    --color-zinc-900: #121218;
+
+    --color-blue-500: #e4e4e7;
+    --color-blue-600: #d4d4d8;
+    --color-blue-700: #a1a1aa;
+  }
+
+  /* Base Document Typography & Rendering */
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
+
+  #root {
+    max-width: 100%;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-primary);
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: 'Inter Tight', 'Plus Jakarta Sans', system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+}
+
+/* Institutional Theme Accent Elements */
+.theme-accent-gradient {
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-hover));
+}
+
+.theme-accent-subtle {
+  background: var(--brand-primary-light);
+  color: var(--brand-primary);
+  border-color: var(--brand-primary-border);
+}
+
+.theme-gold-subtle {
+  background: var(--brand-accent-light);
+  color: var(--brand-accent-hover);
+}
+
+/* Institutional Card & Surface Helpers */
+.academic-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease-in-out;
+}
+
+.academic-card:hover {
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 2px 6px -2px rgba(0, 0, 0, 0.04);
+}
+
+/* Dignified Glassmorphism Panels */
+.glass-obsidian {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.dark .glass-obsidian {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.glass-obsidian-card {
+  background: var(--bg-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.dark .glass-obsidian-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.glass-input-capsule {
+  background: var(--bg-surface);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.06);
+  color: var(--text-main);
+}
+
+.dark .glass-input-capsule {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  color: var(--text-main);
+}
+
+/* Institutional Focus Ring */
+.iridescent-border-active {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--brand-ring);
+}
+
+/* Animations */
+@keyframes aura-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.85; }
+}
+
+.animate-aura-spin {
+  animation: aura-spin 6s linear infinite;
+}
+
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s ease-in-out infinite;
+}
+
+/* Marquee News Ticker */
+@keyframes ticker {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+.animate-marquee {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: ticker 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .page-break {
+    page-break-after: always;
+  }
+}

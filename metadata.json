@@ -1,0 +1,6 @@
+{
+  "name": "College ERP - MPDREC",
+  "description": "Comprehensive College ERP System for Maa Pateshwari Devi Rajkiya Engineering College featuring RBAC, student & faculty portals, academics, attendance, hostel, library, timetable, and campus AI assistant.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

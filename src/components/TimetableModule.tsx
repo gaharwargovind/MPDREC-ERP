@@ -62,8 +62,9 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
   session,
 }) => {
   const [selectedSemester, setSelectedSemester] = useState<number>(() => {
-    if (session?.user?.semester && [3, 5, 7].includes(session.user.semester)) {
-      return session.user.semester;
+    const sem = session?.semester || session?.user?.semester;
+    if (sem && [3, 5, 7].includes(sem)) {
+      return sem;
     }
     return 3;
   });
@@ -79,7 +80,6 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
   const PERIOD_HEADERS = useMemo(() => getPeriodHeaders(selectedSemester), [selectedSemester]);
   const activeCourseDetails = useMemo(() => ALL_YEAR_COURSE_DETAILS[selectedSemester] || SEED_COURSE_DETAILS, [selectedSemester]);
 
-  // New slot form state
   const [newSlot, setNewSlot] = useState<Partial<TimetableSlot>>({
     day: 'Monday',
     timeSlot: '09:00 AM - 09:50 AM',
@@ -185,7 +185,6 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
 
   const isAdminOrFaculty = session.role === 'admin' || session.role === 'faculty';
 
-  // Helper to find slots for grid cell
   const getSlotsForGrid = (day: string, periodNum: string) => {
     return timetable.filter(s => {
       if (s.semester && s.semester !== selectedSemester) return false;
@@ -206,9 +205,7 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       
-      {/* ===================== INSTITUTION OFFICIAL HEADER BANNER ===================== */}
       <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-blue-800/60 relative overflow-hidden">
-        {/* Subtle decorative background pattern */}
         <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-1/3 -mb-16 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -233,7 +230,6 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
               Official Class & Practical Laboratory Schedule • <span className="text-white font-bold">B.Tech. CSE – {yearMeta.yearLabel} ({yearMeta.semesterLabel})</span>
             </p>
 
-            {/* Year & Semester Selector Tabs */}
             <div className="flex flex-wrap items-center gap-2 pt-2">
               {[
                 { sem: 3, label: '2nd Year (Semester III)', room: 'LH-101', eff: '30/07/2026' },
@@ -296,7 +292,6 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
           </div>
         </div>
 
-        {/* View Switcher Sub-Tabs */}
         <div className="flex flex-wrap items-center gap-2 mt-6 pt-5 border-t border-slate-700/60 text-xs font-bold">
           <button
             onClick={() => setActiveTab('master')}
@@ -334,10 +329,8 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
         </div>
       </div>
 
-      {/* ===================== MASTER 2D GRID VIEW ===================== */}
       {activeTab === 'master' && (
         <div className="space-y-6">
-          {/* Quick Filter Bar */}
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Section Filter:</span>
@@ -378,7 +371,6 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
             </div>
           </div>
 
-          {/* Master Table */}
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
             <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850/50 flex items-center justify-between">
               <div>
@@ -418,37 +410,28 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
                   {DAYS_OF_WEEK.map((day) => {
                     return (
                       <tr key={day} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors">
-                        {/* Day Label Sticky Header */}
                         <td className="p-3.5 font-black text-slate-900 dark:text-slate-100 uppercase tracking-wider text-xs border-r border-slate-200 dark:border-slate-700 sticky left-0 bg-white dark:bg-slate-900 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)]">
                           {day}
                         </td>
 
-                        {/* Period 1 */}
                         {renderMasterGridCell(day, '1')}
 
-                        {/* Period 2 */}
                         {renderMasterGridCell(day, '2')}
 
-                        {/* Period 3 */}
                         {renderMasterGridCell(day, '3')}
 
-                        {/* Period 4 */}
                         {renderMasterGridCell(day, '4')}
 
-                        {/* LUNCH BREAK */}
                         <td className="p-2 text-center bg-amber-50/40 dark:bg-amber-950/10 border-r border-slate-200 dark:border-slate-700">
                           <div className="text-[10px] font-black tracking-widest text-amber-700 dark:text-amber-400 uppercase py-2">
                             LUNCH
                           </div>
                         </td>
 
-                        {/* Period 5 */}
                         {renderMasterGridCell(day, '5')}
 
-                        {/* Period 6 */}
                         {renderMasterGridCell(day, '6')}
 
-                        {/* Period 7 */}
                         {renderMasterGridCell(day, '7')}
                       </tr>
                     );
@@ -457,7 +440,6 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
               </table>
             </div>
 
-            {/* Official Verification Signatures Footer */}
             <div className="p-6 bg-slate-50 dark:bg-slate-850/70 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center text-xs">
               <div className="space-y-1">
                 <div className="h-10 flex items-end justify-center font-serif italic text-blue-600 dark:text-blue-400 font-bold text-sm">
@@ -493,10 +475,8 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
         </div>
       )}
 
-      {/* ===================== DAILY TIMELINE / CARD VIEW ===================== */}
       {activeTab === 'daily' && (
         <div className="space-y-6">
-          {/* Day Selector Ribbon */}
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-6 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
@@ -536,7 +516,6 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
               ))}
             </div>
 
-            {/* Filter Sub-bar */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
               <div className="relative">
                 <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -578,7 +557,6 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
             </div>
           </div>
 
-          {/* Cards Grid for Selected Day */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredSlots.length > 0 ? (
               filteredSlots.map((slot) => {
@@ -599,7 +577,6 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
                         : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-blue-400'
                     }`}
                   >
-                    {/* Badge & Time Header */}
                     <div className="flex items-center justify-between gap-2 mb-3">
                       <span className={`text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full ${
                         isPractical
@@ -687,7 +664,6 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
         </div>
       )}
 
-      {/* ===================== COURSE & FACULTY DIRECTORY (Extracted Table) ===================== */}
       {activeTab === 'courses' && (
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
@@ -787,7 +763,6 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
         </div>
       )}
 
-      {/* ===================== ADD SLOT MODAL (FOR ADMIN & FACULTY) ===================== */}
       {showAddSlotModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-in fade-in duration-150">
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 max-w-lg w-full shadow-2xl">
@@ -1003,7 +978,6 @@ export const TimetableModule: React.FC<TimetableModuleProps> = ({
       );
     }
 
-    // When 2 parallel section labs exist (e.g. Sec-A and Sec-B simultaneously)
     return (
       <td 
         key={`${day}-${periodNum}`}

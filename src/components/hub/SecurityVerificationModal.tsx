@@ -17,14 +17,14 @@ import { e2eeService } from '../../services/e2eeService';
 import { storageService } from '../../services/storageService';
 
 interface SecurityVerificationModalProps {
-  isOpen: boolean;
+  isOpen?: boolean;
   onClose: () => void;
   chat: HubChat;
   currentUserId: string;
 }
 
 export const SecurityVerificationModal: React.FC<SecurityVerificationModalProps> = ({
-  isOpen,
+  isOpen = true,
   onClose,
   chat,
   currentUserId,
@@ -41,7 +41,6 @@ export const SecurityVerificationModal: React.FC<SecurityVerificationModalProps>
     const loadSecurityData = async () => {
       setLoading(true);
       try {
-        // Fetch current user key
         const myKeyPair = await e2eeService.getOrCreateUserKeyPair(currentUserId);
         
         let peerKey: JsonWebKey | undefined;
@@ -51,7 +50,6 @@ export const SecurityVerificationModal: React.FC<SecurityVerificationModalProps>
           if (peerId) {
             peerKey = storageService.getUserPublicKey(peerId);
             if (!peerKey) {
-              // Generate and store peer key if absent
               const peerKeyPair = await e2eeService.getOrCreateUserKeyPair(peerId);
               peerKey = peerKeyPair.publicKey;
               storageService.saveUserPublicKey(peerId, peerKey);
@@ -68,7 +66,6 @@ export const SecurityVerificationModal: React.FC<SecurityVerificationModalProps>
           setSafetyBlocks(blocks);
           setMatrixCode(matrixCode);
         } else {
-          // Fallback static derived blocks
           setSafetyBlocks([
             '48210', '99124', '38471', '10482',
             '59128', '88235', '49012', '77129',
@@ -105,7 +102,6 @@ export const SecurityVerificationModal: React.FC<SecurityVerificationModalProps>
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
       <div className="relative w-full max-w-lg bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
         
-        {/* Modal Header */}
         <div className="flex items-center justify-between p-5 border-b border-slate-800 bg-slate-950/60">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shadow-lg shadow-emerald-500/10">
@@ -129,10 +125,8 @@ export const SecurityVerificationModal: React.FC<SecurityVerificationModalProps>
           </button>
         </div>
 
-        {/* Modal Content */}
         <div className="p-6 overflow-y-auto space-y-5">
           
-          {/* Status Banner */}
           <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 flex items-start gap-3">
             <Lock className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
             <div className="text-xs space-y-1">
@@ -143,7 +137,6 @@ export const SecurityVerificationModal: React.FC<SecurityVerificationModalProps>
             </div>
           </div>
 
-          {/* Safety Numbers (60 Digits) */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
@@ -192,7 +185,6 @@ export const SecurityVerificationModal: React.FC<SecurityVerificationModalProps>
             </p>
           </div>
 
-          {/* Cryptographic Details Card */}
           <div className="p-4 rounded-2xl bg-slate-950/50 border border-slate-800/80 space-y-3">
             <h4 className="text-xs font-bold text-white flex items-center gap-2">
               <Key className="w-4 h-4 text-amber-400" />
@@ -217,7 +209,6 @@ export const SecurityVerificationModal: React.FC<SecurityVerificationModalProps>
             </div>
           </div>
 
-          {/* Mark as Verified Button */}
           <div className="pt-1 flex items-center justify-between gap-3">
             <button
               onClick={() => setIsVerified(!isVerified)}

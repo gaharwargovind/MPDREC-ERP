@@ -43,19 +43,16 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 }) => {
   const [activeRole, setActiveRole] = useState<RoleTabType>('student');
   
-  // Selected IDs from menus
   const defaultStudent = students.find(s => s.rollNo === 'CS-2512140100045') || students[0];
   const [selectedStudentRoll, setSelectedStudentRoll] = useState<string>(defaultStudent?.rollNo || '');
   const [selectedFacultyId, setSelectedFacultyId] = useState<string>(facultyList[0]?.facultyId || 'FAC-CSE-01');
 
-  // Input states (passwords start empty for manual typing)
   const [identifier, setIdentifier] = useState(defaultStudent?.rollNo || '');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
 
-  // Forgot / Reset Password state
   const [showForgotModal, setShowForgotModal] = useState(false);
   const [resetIdentifier, setResetIdentifier] = useState('');
   const [resetToken, setResetToken] = useState('');
@@ -68,7 +65,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
   if (!isOpen) return null;
 
-  // Currently resolved entities for profile preview
   const currentSelectedStudent = students.find(
     s => s.rollNo.toLowerCase() === identifier.trim().toLowerCase()
   ) || students.find(s => s.rollNo === selectedStudentRoll) || students[0];
@@ -77,7 +73,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     f => f.facultyId.toLowerCase() === identifier.trim().toLowerCase() || f.email.toLowerCase() === identifier.trim().toLowerCase()
   ) || facultyList.find(f => f.facultyId === selectedFacultyId) || facultyList[0];
 
-  // Role Tab Switching
   const handleTabSelect = (tab: RoleTabType) => {
     setActiveRole(tab);
     setAuthError('');
@@ -106,7 +101,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     }
   };
 
-  // Quick Guest Login (Unrestricted Public Visitor)
   const handleGuestLogin = () => {
     const session: AuthSession = {
       role: 'guest',
@@ -118,7 +112,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     onClose();
   };
 
-  // Form Submission & Credential Validation
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthError('');
@@ -144,7 +137,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     setIsVerifying(true);
 
     try {
-      // Direct server-side authentication with rate limiting and secure httpOnly cookies
       const result = await authClientService.login(activeRole, cleanId, cleanPass);
 
       if (!result.success) {
@@ -159,9 +151,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({
         return;
       }
 
-      // Enrich session with local client details if available
       let enrichedSession: AuthSession = result.session || {
-        role: activeRole === 'guest' ? 'guest' : activeRole,
+        role: activeRole,
         userId: cleanId,
         name: cleanId,
         email: `${cleanId.toLowerCase().replace(/[^a-z0-9]/g, '')}@mpdrec.ac.in`,
@@ -231,7 +222,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     }
   };
 
-  // Handle Request Password Reset Token (15-min single-use)
   const handleRequestReset = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!resetIdentifier.trim()) {
@@ -255,7 +245,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     }
   };
 
-  // Handle Confirm Password Reset with Token
   const handleCompleteReset = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!resetToken.trim() || newPassword.length < 6) {
@@ -302,14 +291,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     >
       <div className="bg-white dark:bg-[#0c1222] border border-slate-200 dark:border-indigo-950/80 rounded-3xl shadow-2xl shadow-indigo-950/30 max-w-2xl w-full overflow-hidden relative max-h-[92vh] flex flex-col transition-all">
         
-        {/* Institutional Header with Navy/Indigo Gradient & Gold Trim */}
         <div className="bg-gradient-to-br from-[#0a1128] via-[#101f42] to-[#1c2c5b] text-white p-4 sm:p-6 relative overflow-hidden shrink-0 border-b border-indigo-900/50">
           
-          {/* Subtle Institutional Background Watermark Accent */}
           <div className="absolute -right-8 -bottom-8 w-44 h-44 rounded-full bg-blue-500/10 blur-2xl pointer-events-none" />
           <div className="absolute -left-8 -top-8 w-44 h-44 rounded-full bg-indigo-500/10 blur-2xl pointer-events-none" />
 
-          {/* Desktop Top Right Controls */}
           <div className="hidden sm:flex absolute top-4 right-4 items-center gap-2">
             <button
               onClick={handleGuestLogin}
@@ -330,7 +316,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
             </button>
           </div>
           
-          {/* Mobile Top Row */}
           <div className="flex sm:hidden items-center justify-between gap-2 pb-3 mb-3 border-b border-white/10">
             <div className="flex items-center gap-2.5 min-w-0">
               <div className="w-9 h-9 rounded-xl bg-white p-0.5 flex items-center justify-center shrink-0 border border-amber-300 shadow-md">
@@ -364,7 +349,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
             </div>
           </div>
 
-          {/* Desktop Brand Header */}
           <div className="hidden sm:flex items-center gap-3.5 sm:pr-48">
             <div className="w-14 h-14 rounded-2xl bg-white p-1 flex items-center justify-center text-slate-950 shadow-lg shrink-0 border-2 border-amber-400/60">
               <CollegeLogo className="w-12 h-12" />
@@ -384,7 +368,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
             </div>
           </div>
 
-          {/* Responsive Role Navigation Tabs (6 Roles) */}
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5 sm:gap-2 mt-3 sm:mt-5 bg-black/40 p-1.5 rounded-2xl backdrop-blur-md border border-white/15">
             {roleTabs.map((r) => {
               const Icon = r.icon;
@@ -408,10 +391,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({
           </div>
         </div>
 
-        {/* Modal Scrollable Body */}
         <div className="p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-5 overflow-x-hidden flex-1">
           
-          {/* Guest Role View */}
           {activeRole === 'guest' ? (
             <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-purple-500/10 via-indigo-500/5 to-transparent border border-purple-200 dark:border-purple-900/50 space-y-4">
               <div className="flex items-start gap-3.5">
@@ -463,10 +444,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({
               </div>
             </div>
           ) : (
-            /* Institutional Authentication Forms (Student, Faculty, Admin, Staff, Warden) */
             <div className="space-y-4">
               
-              {/* STUDENT ROLE: Roster Selection Dropdown */}
               {activeRole === 'student' && (
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -497,7 +476,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                     ))}
                   </select>
 
-                  {/* Active Selected Student Badge Preview */}
                   {currentSelectedStudent && (
                     <div className="p-3 rounded-xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/60 flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2.5 min-w-0">
@@ -521,7 +499,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 </div>
               )}
 
-              {/* FACULTY ROLE: Faculty Selection Dropdown */}
               {activeRole === 'faculty' && (
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -552,7 +529,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                     ))}
                   </select>
 
-                  {/* Active Selected Faculty Badge Preview */}
                   {currentSelectedFaculty && (
                     <div className="p-3 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/60 flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2.5 min-w-0">
@@ -576,7 +552,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 </div>
               )}
 
-              {/* ADMIN ROLE PREVIEW */}
               {activeRole === 'admin' && (
                 <div className="p-3 rounded-xl bg-rose-50/70 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/60 flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg bg-rose-700 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-xs">
@@ -593,7 +568,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 </div>
               )}
 
-              {/* STAFF ROLE PREVIEW */}
               {activeRole === 'staff' && (
                 <div className="p-3 rounded-xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg bg-amber-700 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-xs">
@@ -610,7 +584,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 </div>
               )}
 
-              {/* WARDEN ROLE PREVIEW */}
               {activeRole === 'warden' && (
                 <div className="p-3 rounded-xl bg-orange-50/70 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900/60 flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg bg-orange-700 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-xs">
@@ -627,7 +600,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 </div>
               )}
 
-              {/* Error Message Banner */}
               {authError && (
                 <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/80 border border-rose-200 dark:border-rose-900 text-rose-800 dark:text-rose-200 text-xs sm:text-sm font-semibold flex items-center gap-2 animate-in fade-in duration-200">
                   <AlertCircle className="w-4 h-4 shrink-0 text-rose-600 dark:text-rose-400" />
@@ -635,11 +607,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 </div>
               )}
 
-              {/* Form Inputs (Roll No/ID and Password) */}
               <form onSubmit={handleLoginSubmit} className="space-y-3.5 pt-1">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
                   
-                  {/* Identifier Input */}
                   <div>
                     <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                       {activeRole === 'student' ? 'Roll No. / Enrollment ID' : activeRole === 'faculty' ? 'Faculty ID' : activeRole === 'admin' ? 'Admin ID' : activeRole === 'staff' ? 'Staff ID' : 'Warden Staff ID'}
@@ -657,7 +627,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                     </div>
                   </div>
 
-                  {/* Password Input (No hint exposed, manual entry required) */}
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
                       <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
@@ -704,7 +673,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
                 </div>
 
-                {/* Form Buttons */}
                 <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
                   <button
                     type="button"
@@ -742,7 +710,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
         </div>
 
-        {/* FORGOT PASSWORD MODAL OVERLAY */}
         {showForgotModal && (
           <div className="absolute inset-0 z-50 bg-slate-950/90 backdrop-blur-md p-4 sm:p-6 flex flex-col justify-center items-center animate-in fade-in zoom-in-95 duration-200">
             <div className="bg-white dark:bg-[#101729] border border-slate-200 dark:border-indigo-900 rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative">

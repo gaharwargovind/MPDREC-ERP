@@ -1,15 +1,15 @@
-export type UserRole = 'admin' | 'faculty' | 'student' | 'staff' | 'guest';
+export type UserRole = 'admin' | 'faculty' | 'student' | 'staff' | 'warden' | 'guest';
 
 export interface SubjectMark {
   code: string;
   name: string;
   credits: number;
-  classTest1: number; // Max 30
-  classTest2: number; // Max 30
-  assignment: number; // Max 20
-  endSem: number;     // Max 100
-  total: number;      // Scaled / Total 100
-  grade: 'A+' | 'A' | 'B+' | 'B' | 'C+' | 'C' | 'D' | 'F';
+  classTest1: number;
+  classTest2: number;
+  assignment: number;
+  endSem: number;
+  total: number;
+  grade: 'O' | 'A+' | 'A' | 'B+' | 'B' | 'C+' | 'C' | 'D' | 'F';
   gradePoint: number;
 }
 
@@ -26,7 +26,7 @@ export interface IssuedBook {
 
 export interface SemesterResultDetail {
   semester: number;
-  academicYear: string; // e.g. "2024-2025" or "2025-2026"
+  academicYear: string;
   sessionType: 'Odd Semester' | 'Even Semester';
   status: 'PASS' | 'PASSED WITH HONOURS' | 'PROMOTED WITH BACKLOG' | 'IN PROGRESS';
   sgpa: number;
@@ -53,19 +53,17 @@ export interface Student {
   parentName: string;
   parentPhone: string;
   branch: 'Computer Science & Engineering' | 'Electrical Engineering' | 'Mechanical Engineering' | 'Civil Engineering' | 'Information Technology' | 'Electronics & Comm.' | 'Mechanical Engg' | string;
-  semester: number; // 1 to 8
-  currentYear?: number; // 1 to 4 (e.g. 2nd Year)
-  academicSession?: string; // e.g. "2025-2026"
+  semester: number;
+  currentYear?: number;
+  academicSession?: string;
   section: 'A' | 'B';
   admissionYear: number;
   category: 'General' | 'OBC' | 'SC' | 'ST' | 'EWS';
   
-  // Attendance
   totalClasses: number;
   attendedClasses: number;
   attendancePercentage: number;
   
-  // Academics
   subjects: SubjectMark[];
   sgpa: number;
   cgpa: number;
@@ -79,14 +77,12 @@ export interface Student {
   }[];
   semesterResults?: SemesterResultDetail[];
 
-  // Fee Details
   totalFees: number;
   feesPaid: number;
   balanceFees: number;
   feeStatus: 'Paid' | 'Partial' | 'Pending';
   scholarshipStatus?: string;
 
-  // Hostel & Library
   hostelAllotment?: {
     hostelName: 'Saryu Girls Hostel' | 'Lehri Hostel' | 'Day Scholar' | string;
     roomNo: string;
@@ -96,7 +92,6 @@ export interface Student {
   };
   issuedBooks: IssuedBook[];
   
-  // Project / Assignments
   assignedProject?: {
     title: string;
     mentor: string;
@@ -135,9 +130,9 @@ export interface Notice {
 export interface TimetableSlot {
   id: string;
   day: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday';
-  time?: string; // e.g., '09:00 AM - 09:50 AM'
+  time?: string;
   timeSlot: string;
-  period?: number | string; // e.g., 1, 2, '1-2', '5-6'
+  period?: number | string;
   subjectCode: string;
   subjectName: string;
   room?: string;
@@ -243,7 +238,7 @@ export type PeerMessage = PeerChatMessage;
 
 export interface AcademicTermMilestone {
   id: string;
-  termName: string; // e.g. "Even Semester 2025-2026"
+  termName: string;
   startDate: string;
   ct1Date: string;
   midSemBreak: string;
@@ -265,6 +260,15 @@ export interface AuthSession {
   department?: string;
   branch?: string;
   semester?: number;
+  studentYear?: number;
+  user?: {
+    id?: string;
+    role?: UserRole;
+    name?: string;
+    email?: string;
+    semester?: number;
+    [key: string]: any;
+  };
 }
 
 export interface GalleryItem {
@@ -274,8 +278,8 @@ export interface GalleryItem {
   type: 'image' | 'video';
   mediaUrl: string;
   thumbnailUrl?: string;
-  category: string; // Event Name (e.g. 'Tejas Annual Sports Fest 2k25', 'Freshers Party 2k25', 'Euphoria 2026')
-  eventId?: string; // Links directly to a CampusEvent
+  category: string;
+  eventId?: string;
   uploadedBy: string;
   uploadedByRole: 'admin' | 'faculty' | 'student';
   uploadedById?: string;

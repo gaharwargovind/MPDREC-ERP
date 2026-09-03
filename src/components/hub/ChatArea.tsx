@@ -82,10 +82,8 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
 
   const currentUserId = session.rollNo || session.userId || 'user-me';
 
-  // Strict Scoping Access Control Check
   const isAuthorized = chat ? storageService.isUserChatParticipant(chat, currentUserId) : false;
 
-  // Reset inputs and temporary state on chat change or user change
   useEffect(() => {
     setInputText('');
     setReplyingTo(null);
@@ -95,12 +93,10 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
     setInChatSearch('');
   }, [chat?.id, currentUserId]);
 
-  // Scroll to bottom on new message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages.length]);
 
-  // Decrypt Encrypted Messages on Mount & Change
   useEffect(() => {
     if (!chat || !isAuthorized) return;
 
@@ -167,7 +163,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
     );
   }
 
-  // Access Denied Screen if user is not a participant
   if (!isAuthorized) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-8 bg-slate-950 text-center select-none animate-in fade-in duration-200">
@@ -190,13 +185,11 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
     );
   }
 
-  // Filter messages for current chat
   const chatMessages = messages.filter(m => 
     (m.chatId && m.chatId.trim().toLowerCase() === chat.id.trim().toLowerCase()) ||
     (m.conversationId && m.conversationId.trim().toLowerCase() === chat.id.trim().toLowerCase())
   );
 
-  // In-chat search filtering
   const displayMessages = inChatSearch.trim()
     ? chatMessages.filter(m => {
         const text = decryptedTextMap[m.id] || m.content;
@@ -211,7 +204,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
     }
     if (!inputText.trim()) return;
 
-    // Check if channel is admin only
     if (chat.onlyAdminsCanPost && chat.admins && !chat.admins.includes(currentUserId)) {
       alert('Only administrators and faculty can send messages in this broadcast channel.');
       return;
@@ -288,7 +280,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
       reactions: {}
     };
 
-    // Cache decrypted text locally for instant preview
     setDecryptedTextMap(prev => ({ ...prev, [msgId]: rawText }));
 
     onSendMessage(newMsg);
@@ -357,7 +348,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
 
   const quickEmojis = ['👍', '❤️', '💡', '🔥', '🚀', '🙌'];
 
-  // Wallpaper backgrounds styling
   const getWallpaperClass = (wpId?: string) => {
     switch (wpId || userProfile.wallpaperTheme || chat.customWallpaper) {
       case 'academic-graph':
@@ -379,13 +369,10 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
   return (
     <div className="flex-1 flex flex-col h-full bg-slate-950 overflow-hidden relative">
       
-      {/* 1. TOP CHAT HEADER */}
       <div className="p-3.5 border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-xl flex items-center justify-between gap-3 z-20">
         
-        {/* Left: Avatar, Name & Typing Status */}
         <div className="flex items-center gap-3 min-w-0">
           
-          {/* Mobile Back button */}
           {onBackToList && (
             <button
               onClick={onBackToList}
@@ -421,7 +408,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
               )}
             </div>
 
-            {/* Dynamic Status */}
             <div className="text-[11px] flex items-center gap-1.5 truncate">
               {chat.type === 'direct' ? (
                 <span className="text-emerald-400 font-medium flex items-center gap-1">
@@ -440,10 +426,8 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
           </div>
         </div>
 
-        {/* Right Header Actions */}
         <div className="flex items-center gap-1.5 shrink-0">
           
-          {/* E2EE Verification Shield Badge */}
           <button
             onClick={() => setShowSecurityModal(true)}
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/60 border border-emerald-500/30 text-emerald-400 text-xs font-semibold transition-all shadow-sm group"
@@ -453,7 +437,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
             <span className="hidden md:inline font-mono text-[11px]">E2EE Verified</span>
           </button>
 
-          {/* In-chat Search toggle */}
           <button
             onClick={() => setShowSearchBar(!showSearchBar)}
             className={`p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all ${
@@ -464,7 +447,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
             <Search className="w-4 h-4" />
           </button>
 
-          {/* Wallpaper switcher */}
           <div className="relative">
             <button
               onClick={() => setShowWallpaperMenu(!showWallpaperMenu)}
@@ -496,7 +478,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
             )}
           </div>
 
-          {/* Toggle Right Details Drawer */}
           <button
             onClick={onToggleRightDrawer}
             className={`p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all ${
@@ -511,7 +492,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
 
       </div>
 
-      {/* Optional Search Bar in Header */}
       {showSearchBar && (
         <div className="p-2.5 bg-slate-900 border-b border-slate-800 flex items-center gap-2 z-10 animate-in slide-in-from-top-2">
           <Search className="w-4 h-4 text-slate-400" />
@@ -543,7 +523,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
         </div>
       )}
 
-      {/* Pinned Message Banner */}
       {pinnedMessage && (
         <div className="p-2 px-4 bg-slate-900/90 border-b border-amber-500/30 flex items-center justify-between text-xs text-slate-300 z-10">
           <div className="flex items-center gap-2 truncate">
@@ -557,14 +536,12 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
         </div>
       )}
 
-      {/* 2. MAIN MESSAGE FEED */}
       <div 
         id="chat-messages-container"
         ref={messageFeedRef}
         className={`flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 ${getWallpaperClass(chat.customWallpaper)}`}
       >
         
-        {/* Broadcast Admin Notice */}
         {chat.onlyAdminsCanPost && (
           <div className="max-w-md mx-auto p-2.5 rounded-2xl bg-amber-950/40 border border-amber-800/60 text-center text-xs text-amber-300 flex items-center justify-center gap-2 shadow-lg">
             <Lock className="w-3.5 h-3.5" />
@@ -584,10 +561,8 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
               className={`flex flex-col group ${isMe ? 'items-end' : 'items-start'} transition-all`}
             >
               
-              {/* Message Container with Avatar & Content */}
               <div className={`flex items-end gap-2 max-w-[85%] sm:max-w-[70%] ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
                 
-                {/* Peer Avatar */}
                 {!isMe && (
                   <img
                     src={msg.senderAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80'}
@@ -596,7 +571,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                   />
                 )}
 
-                {/* Bubble */}
                 <div
                   className={`relative rounded-3xl p-3.5 shadow-xl transition-all ${
                     isMe
@@ -605,7 +579,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                   }`}
                 >
                   
-                  {/* Sender Header for Received messages */}
                   {!isMe && (
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-xs font-black text-blue-400">
@@ -627,7 +600,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                     </div>
                   )}
 
-                  {/* Quoted Reply rendering */}
                   {msg.replyTo && (
                     <div className={`mb-2 p-2 rounded-xl text-xs border-l-4 ${
                       isMe 
@@ -643,14 +615,12 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                     </div>
                   )}
 
-                  {/* 1. TEXT CONTENT */}
                   {msg.type === 'text' && (
                     <p className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap break-words select-text font-normal">
                       {decryptedTextMap[msg.id] || msg.content}
                     </p>
                   )}
 
-                  {/* 2. CODE SNIPPET CONTENT */}
                   {msg.type === 'code' && msg.codeSnippet && (
                     <div className="space-y-2 select-text">
                       {msg.content && (
@@ -685,7 +655,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                     </div>
                   )}
 
-                  {/* 3. ATTACHMENT: IMAGE CONTENT */}
                   {msg.type === 'image' && msg.attachment && (
                     <div className="space-y-2">
                       <div 
@@ -707,7 +676,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                     </div>
                   )}
 
-                  {/* 4. ATTACHMENT: DOCUMENT / PDF / ZIP CONTENT */}
                   {msg.type === 'file' && msg.attachment && (
                     <div className="space-y-2">
                       <div className={`flex items-center gap-3 p-3 rounded-2xl border ${
@@ -737,7 +705,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                     </div>
                   )}
 
-                  {/* Timestamp & Encryption & Double Ticks Footer */}
                   <div className="flex items-center justify-end gap-1.5 mt-1.5 pt-0.5 text-[10px] opacity-75">
                     {msg.isEncrypted && (
                       <span title="🔒 End-to-End Encrypted with AES-256-GCM" className="flex items-center gap-0.5 text-emerald-400 font-mono text-[9px] cursor-help">
@@ -751,7 +718,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                     )}
                   </div>
 
-                  {/* Reactions Pill Display */}
                   {msg.reactions && Object.keys(msg.reactions).length > 0 && (
                     <div className="flex flex-wrap gap-1 mt-1.5 pt-1 border-t border-white/10">
                       {Object.entries(msg.reactions).map(([emoji, users]) => {
@@ -777,7 +743,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
 
                 </div>
 
-                {/* Floating Quick Action Trigger (Reply, Emoji React) */}
                 <div className="opacity-0 group-hover:opacity-100 flex items-center gap-1 shrink-0 transition-opacity mb-1">
                   <button
                     onClick={() => setReplyingTo(msg)}
@@ -809,10 +774,8 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
         <div ref={messagesEndRef} />
       </div>
 
-      {/* 3. BOTTOM COMPOSER / INPUT BAR */}
       <div className="p-3 sm:p-4 border-t border-slate-800/80 bg-slate-900/95 backdrop-blur-xl z-20">
         
-        {/* Replying Banner Preview */}
         {replyingTo && (
           <div className="mb-2 p-2.5 rounded-2xl bg-slate-950 border border-blue-500/40 flex items-center justify-between text-xs animate-in slide-in-from-bottom-2">
             <div className="flex items-center gap-2 min-w-0">
@@ -831,10 +794,8 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
           </div>
         )}
 
-        {/* Input Controls Row */}
         <div className="flex items-center gap-2">
           
-          {/* Attachment Button & Popup Menu */}
           <div className="relative">
             <button
               onClick={() => setShowAttachMenu(!showAttachMenu)}
@@ -906,7 +867,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
             />
           </div>
 
-          {/* Code Snippet Quick Trigger */}
           <button
             onClick={onOpenCodeSnippetModal}
             className="p-2.5 rounded-2xl bg-slate-800 hover:bg-emerald-600/20 text-slate-300 hover:text-emerald-400 border border-slate-700/60 hover:border-emerald-500/40 transition-all hidden sm:flex items-center justify-center"
@@ -915,7 +875,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
             <Code className="w-5 h-5" />
           </button>
 
-          {/* Text Input & Form */}
           <form 
             id="chat-message-form"
             onSubmit={handleSendTextMessage} 
@@ -937,7 +896,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                 className="w-full pl-4 pr-10 py-3 bg-slate-950 border border-slate-800 rounded-2xl text-white text-xs sm:text-sm placeholder:text-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
               />
 
-              {/* Quick Emoji Bar Trigger */}
               <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
                 <button
                   type="button"
@@ -949,7 +907,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                 </button>
               </div>
 
-              {/* Emoji Quick Picker Dropdown */}
               {showEmojiPicker && (
                 <div className="absolute bottom-12 right-0 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-2.5 z-50 flex items-center gap-2 animate-in fade-in zoom-in-95">
                   {quickEmojis.map((emoji) => (
@@ -969,7 +926,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
               )}
             </div>
 
-            {/* Send Button */}
             <button
               id="chat-send-button"
               type="submit"
@@ -988,7 +944,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
 
       </div>
 
-      {/* Media Lightbox Viewer Modal */}
       {lightboxMedia && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-xl animate-in fade-in">
           <div className="relative max-w-4xl max-h-[90vh] flex flex-col items-center">
@@ -1010,9 +965,9 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
         </div>
       )}
 
-      {/* Security Fingerprint & E2EE Verification Modal */}
       {showSecurityModal && (
         <SecurityVerificationModal
+          isOpen={showSecurityModal}
           chat={chat}
           currentUserId={currentUserId}
           onClose={() => setShowSecurityModal(false)}

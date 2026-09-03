@@ -65,7 +65,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
   const currentUserId = session.rollNo || session.userId || 'user-me';
   const isAdmin = chat.admins?.includes(currentUserId) || chat.creatorId === currentUserId || session.role === 'admin';
 
-  // Extract shared items from chat messages
   const chatMessages = messages.filter(m => m.chatId === chat.id);
   const sharedDocs = chatMessages.filter(m => m.type === 'file' && m.attachment);
   const sharedMedia = chatMessages.filter(m => m.type === 'image' && m.attachment);
@@ -101,7 +100,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
     const updatedMembers = chat.members?.filter(m => m.id !== memberId) || [];
     const updatedAdmins = chat.admins?.filter(id => id !== memberId);
 
-    // Rotate E2EE Group Keys for remaining members
     let encryptedGroupKeys = chat.encryptedGroupKeys;
     try {
       const memberKeys: Record<string, JsonWebKey> = {};
@@ -109,7 +107,8 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
         const keyPair = await e2eeService.getOrCreateUserKeyPair(m.id);
         memberKeys[m.id] = keyPair.publicKey;
       }
-      encryptedGroupKeys = await e2eeService.createGroupKeyPackages(memberKeys);
+      const keyPackages = await e2eeService.createGroupKeyPackages(memberKeys);
+      encryptedGroupKeys = keyPackages.packages;
     } catch (err) {
       console.warn('Key rotation warning:', err);
     }
@@ -152,7 +151,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
 
     const updatedMembers = [...(chat.members || []), newMember];
 
-    // Re-wrap E2EE Group Keys including new member
     let encryptedGroupKeys = chat.encryptedGroupKeys;
     try {
       const memberKeys: Record<string, JsonWebKey> = {};
@@ -160,7 +158,8 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
         const keyPair = await e2eeService.getOrCreateUserKeyPair(m.id);
         memberKeys[m.id] = keyPair.publicKey;
       }
-      encryptedGroupKeys = await e2eeService.createGroupKeyPackages(memberKeys);
+      const addKeyPackages = await e2eeService.createGroupKeyPackages(memberKeys);
+      encryptedGroupKeys = addKeyPackages.packages;
     } catch (err) {
       console.warn('Group key update warning:', err);
     }
@@ -190,7 +189,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
   return (
     <div className="w-80 lg:w-96 flex flex-col h-full bg-slate-900 border-l border-slate-800 select-none overflow-hidden animate-in slide-in-from-right duration-200">
       
-      {/* Header */}
       <div className="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
         <h4 className="text-xs font-black text-white uppercase tracking-wider">
           {chat.type === 'direct' ? 'Peer Contact Profile' : 'Study Group Details'}
@@ -203,10 +201,8 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
         </button>
       </div>
 
-      {/* Body */}
       <div className="flex-1 overflow-y-auto p-4 space-y-5">
         
-        {/* Profile / Group Card */}
         <div className="flex flex-col items-center text-center p-5 rounded-3xl bg-slate-950/60 border border-slate-800">
           <img
             src={chat.avatar}
@@ -225,7 +221,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
             {chat.description || 'Academic peer collaboration space at MPDREC'}
           </p>
 
-          {/* Quick Action Buttons */}
           <div className="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-slate-800/80 w-full">
             <button
               onClick={handleTogglePin}
@@ -268,7 +263,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
           </div>
         </div>
 
-        {/* Group Admin Permissions Box (If user is Admin) */}
         {chat.type === 'group' && isAdmin && (
           <div className="p-3.5 rounded-2xl bg-indigo-950/30 border border-indigo-800/60 space-y-3">
             <div className="flex items-center gap-2 text-xs font-bold text-indigo-300">
@@ -292,7 +286,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
           </div>
         )}
 
-        {/* Tabbed Shared Media / Members section */}
         <div>
           <div className="flex items-center border-b border-slate-800 gap-1 pb-1">
             {chat.type === 'group' && (
@@ -344,7 +337,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
 
           <div className="pt-3">
             
-            {/* 1. MEMBERS TAB */}
             {activeMediaTab === 'members' && chat.type === 'group' && (
               <div className="space-y-2">
                 
@@ -358,7 +350,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
                   </button>
                 )}
 
-                {/* Member Search Bar */}
                 {(chat.members?.length || 0) > 4 && (
                   <div className="relative mb-2">
                     <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -414,7 +405,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
                             </div>
                           </div>
 
-                          {/* Admin member actions */}
                           {isAdmin && member.id !== currentUserId && (
                             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                               {!isMemberAdmin && (
@@ -445,7 +435,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
               </div>
             )}
 
-            {/* 2. DOCUMENTS TAB */}
             {activeMediaTab === 'docs' && (
               <div className="space-y-2">
                 {sharedDocs.length === 0 ? (
@@ -481,7 +470,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
               </div>
             )}
 
-            {/* 3. MEDIA TAB */}
             {activeMediaTab === 'media' && (
               <div>
                 {sharedMedia.length === 0 ? (
@@ -507,7 +495,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
               </div>
             )}
 
-            {/* 4. CODE TAB */}
             {activeMediaTab === 'code' && (
               <div className="space-y-2">
                 {sharedCode.length === 0 ? (
@@ -544,7 +531,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
           </div>
         </div>
 
-        {/* Delete / Archive / Leave Options */}
         <div className="pt-4 border-t border-slate-800 space-y-2">
           {chat.type === 'group' ? (
             <>
@@ -600,7 +586,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
 
       </div>
 
-      {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
           <div className="w-full max-w-sm bg-slate-900 border border-red-500/30 rounded-3xl p-6 shadow-2xl space-y-4">
@@ -640,7 +625,6 @@ export const ChatRightDrawer: React.FC<ChatRightDrawerProps> = ({
         </div>
       )}
 
-      {/* Add Member Modal */}
       {showAddMemberModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
           <div className="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-2xl space-y-4">

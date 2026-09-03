@@ -27,6 +27,8 @@ interface ChatSidebarProps {
   chats: HubChat[];
   activeChatId: string | null;
   onSelectChat: (chatId: string) => void;
+  onToggleArchive?: (chatId: string) => void;
+  onDeleteChat?: (chatId: string) => void;
   userProfile: HubUserProfile;
   session: AuthSession;
   onOpenProfileSettings: () => void;
@@ -38,6 +40,8 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
   chats,
   activeChatId,
   onSelectChat,
+  onToggleArchive,
+  onDeleteChat,
   userProfile,
   session,
   onOpenProfileSettings,
@@ -47,7 +51,6 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState<'all' | 'direct' | 'group' | 'channel'>('all');
 
-  // Filter chats by search and category
   const filteredChats = chats.filter((c) => {
     const matchesSearch = 
       c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -64,7 +67,6 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
     return matchesSearch && matchesCategory;
   });
 
-  // Sort pinned first, then by last message recency
   const sortedChats = [...filteredChats].sort((a, b) => {
     if (a.isPinned && !b.isPinned) return -1;
     if (!a.isPinned && b.isPinned) return 1;
@@ -86,10 +88,8 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
   return (
     <div className="flex flex-col h-full bg-slate-900/95 dark:bg-slate-950/90 border-r border-slate-800 backdrop-blur-xl select-none">
       
-      {/* Top Profile & Actions Bar */}
       <div className="p-3.5 border-b border-slate-800/80 bg-slate-950/40 flex items-center justify-between gap-2">
         
-        {/* User Identity Snapshot */}
         <button
           onClick={onOpenProfileSettings}
           className="flex items-center gap-2.5 p-1.5 rounded-2xl hover:bg-slate-800/70 transition-all text-left group"
@@ -119,7 +119,6 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
           </div>
         </button>
 
-        {/* Action Buttons: New Group & New DM */}
         <div className="flex items-center gap-1 shrink-0">
           <button
             onClick={onOpenNewDirectChat}
@@ -140,7 +139,6 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
 
       </div>
 
-      {/* Search Input */}
       <div className="p-3 border-b border-slate-800/80 bg-slate-950/20">
         <div className="relative">
           <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -153,7 +151,6 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
           />
         </div>
 
-        {/* Filter Pills */}
         <div className="flex items-center gap-1.5 pt-2.5 overflow-x-auto no-scrollbar">
           <button
             onClick={() => setActiveFilter('all')}
@@ -201,7 +198,6 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
         </div>
       </div>
 
-      {/* Conversations Stream */}
       <div id="chat-conversations-list" className="flex-1 overflow-y-auto p-2 space-y-1">
         {sortedChats.length === 0 ? (
           <div className="text-center py-16 px-4">
@@ -234,7 +230,6 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
                     : 'bg-transparent border-transparent hover:bg-slate-800/50 hover:border-slate-800'
                 }`}
               >
-                {/* Chat Avatar with Status Indicator */}
                 <div className="relative shrink-0">
                   <img
                     src={chat.avatar}
@@ -256,14 +251,14 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
                   )}
                 </div>
 
-                {/* Info and Preview */}
                 <div className="flex-1 min-w-0">
                   
-                  {/* Top Row: Name & Timestamp */}
                   <div className="flex items-center justify-between gap-1 mb-0.5">
                     <div className="flex items-center gap-1.5 truncate">
                       {chat.type !== 'channel' && (
-                        <Lock className="w-3 h-3 text-emerald-400 shrink-0" title="End-to-End Encrypted Thread" />
+                        <span title="End-to-End Encrypted Thread" className="shrink-0 flex items-center">
+                          <Lock className="w-3 h-3 text-emerald-400" />
+                        </span>
                       )}
                       <span className={`text-xs font-bold truncate ${isActive ? 'text-blue-300' : 'text-slate-100'}`}>
                         {chat.name}
@@ -275,14 +270,12 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
                     </span>
                   </div>
 
-                  {/* Subject Badge (for groups) */}
                   {chat.subject && chat.type === 'group' && (
                     <div className="text-[10px] font-semibold text-indigo-400 truncate mb-0.5">
                       {chat.subject}
                     </div>
                   )}
 
-                  {/* Bottom Row: Message Snippet & Unread / Pin Badges */}
                   <div className="flex items-center justify-between gap-2">
                     <div className="text-[11px] text-slate-400 truncate flex items-center gap-1">
                       {chat.lastMessage ? (
@@ -321,7 +314,6 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
         )}
       </div>
 
-      {/* Bottom Quick Info */}
       <div className="p-3 border-t border-slate-800/80 bg-slate-950/40 flex items-center justify-between text-[11px] text-slate-500 font-medium">
         <span className="flex items-center gap-1.5 text-emerald-400 font-semibold text-[10px]">
           <ShieldCheck className="w-3.5 h-3.5" />

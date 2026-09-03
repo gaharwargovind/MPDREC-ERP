@@ -29,7 +29,6 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
     council?.id || 'technical_council'
   );
 
-  // Common Fields
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [mediaType, setMediaType] = useState<'image' | 'video'>('image');
@@ -39,7 +38,6 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
   const [eventDate, setEventDate] = useState(new Date().toISOString().split('T')[0]);
   const [tagsInput, setTagsInput] = useState('Fest, Campus, Highlights');
   
-  // Event Specific Fields
   const [eventCategory, setEventCategory] = useState<CouncilEvent['category']>('Workshop');
   const [eventTime, setEventTime] = useState('04:00 PM - 06:00 PM');
   const [eventVenue, setEventVenue] = useState('Auditorium Hall / SAC Lounge');
@@ -54,9 +52,7 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
 
   if (!isOpen) return null;
 
-  // Determine user authority level
   const isAdminOrFaculty = session.role === 'admin' || session.role === 'faculty';
-  // Check if student is 3rd or 4th year
   const isSeniorStudent = session.role === 'student' && (session.studentYear === 3 || session.studentYear === 4);
   const canDirectPublish = isAdminOrFaculty || isSeniorStudent;
 
@@ -103,7 +99,7 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
             ? `${session.studentYear || 1}${session.studentYear === 1 ? 'st' : session.studentYear === 2 ? 'nd' : session.studentYear === 3 ? 'rd' : 'th'} Year Student`
             : session.role.toUpperCase(),
           id: session.userId || 'STU-CONTRIB',
-          year: session.studentYear || 1,
+          year: Number(session.studentYear) || 1,
           timestamp: now
         },
         status: isApprovedImmediately ? 'approved' : 'pending',
@@ -120,7 +116,6 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
           : '⏳ Media submitted successfully! Queued for moderation by Council Head & Faculty Convener.'
       );
     } else {
-      // Event Submission
       const newEvent: CouncilEvent = {
         id: `EVT-SUB-${Date.now()}`,
         councilId: selectedCouncilId,
@@ -170,7 +165,6 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
         exit={{ opacity: 0, scale: 0.95, y: 15 }}
         className="relative w-full max-w-2xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden my-8"
       >
-        {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950/50">
           <div className="flex items-center space-x-3">
             <div className="p-2 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400">
@@ -198,7 +192,6 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
           </button>
         </div>
 
-        {/* Success Feedback */}
         <AnimatePresence>
           {successMessage && (
             <motion.div
@@ -213,9 +206,7 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
           )}
         </AnimatePresence>
 
-        {/* Body Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-5 max-h-[80vh] overflow-y-auto">
-          {/* Submission Mode Selector */}
           <div className="grid grid-cols-2 gap-3 p-1.5 bg-slate-950 rounded-xl border border-slate-800">
             <button
               type="button"
@@ -243,7 +234,6 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
             </button>
           </div>
 
-          {/* Select Target Council */}
           <div>
             <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
               Target Council
@@ -272,7 +262,6 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
             </div>
           </div>
 
-          {/* Title / Caption */}
           <div>
             <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
               {submissionType === 'media' ? 'Media Caption / Title *' : 'Event Title *'}
@@ -291,7 +280,6 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
             />
           </div>
 
-          {/* If Event: Category, Tagline, Date, Time & Venue */}
           {submissionType === 'event' && (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -384,7 +372,6 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
             </>
           )}
 
-          {/* If Media: Media Type toggle & video link */}
           {submissionType === 'media' && (
             <>
               <div className="flex items-center space-x-4">
@@ -461,7 +448,6 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
             </>
           )}
 
-          {/* Media / Banner Upload & URL */}
           <div>
             <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
               {submissionType === 'media' ? 'Photo / Video Thumbnail *' : 'Event Banner Poster'}
@@ -510,7 +496,6 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
               )}
             </div>
 
-            {/* Direct Image URL input */}
             <div className="mt-2">
               <input
                 type="url"
@@ -525,7 +510,6 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
             </div>
           </div>
 
-          {/* Description */}
           <div>
             <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
               Description / Notes
@@ -539,7 +523,6 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
             />
           </div>
 
-          {/* Submitter Info Footer Note */}
           <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between text-xs text-slate-400">
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
@@ -552,7 +535,6 @@ export const CouncilSubmissionModal: React.FC<CouncilSubmissionModalProps> = ({
             </span>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex items-center justify-end space-x-3 pt-2">
             <button
               type="button"

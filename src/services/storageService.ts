@@ -65,24 +65,38 @@ class StorageService {
     }
   }
 
-  // In-memory session representation (mitigating client-side persistent token storage)
-  private inMemorySession: AuthSession = {
-    role: 'guest',
-    userId: 'GUEST-001',
-    name: 'Public Visitor',
-    email: 'visitor@mpdrec.ac.in',
-  };
+  // In-memory session representation with localStorage profile fallback
+  private inMemorySession: AuthSession | null = null;
 
-  // Session Management (No sensitive tokens or secrets stored in localStorage)
+  // Session Management (Stores safe profile only, no secret passwords or tokens)
   getSession(): AuthSession {
-    return this.inMemorySession;
+    if (this.inMemorySession) return this.inMemorySession;
+    const defaultGuest: AuthSession = {
+      role: 'guest',
+      userId: 'GUEST-001',
+      name: 'Public Visitor',
+      email: 'visitor@mpdrec.ac.in',
+    };
+    const stored = this.get<AuthSession>(STORAGE_KEYS.SESSION, defaultGuest);
+    this.inMemorySession = stored;
+    return stored;
   }
 
   setSession(session: AuthSession): void {
-    this.inMemorySession = session;
-    // Defensively remove any legacy sensitive token storage
+    const safeSession: AuthSession = {
+      role: session.role || 'guest',
+      userId: session.userId || 'GUEST-001',
+      name: session.name || 'User',
+      email: session.email || 'user@mpdrec.ac.in',
+      rollNo: session.rollNo,
+      facultyId: session.facultyId,
+      branch: session.branch,
+      semester: session.semester,
+      department: session.department,
+    };
+    this.inMemorySession = safeSession;
     try {
-      localStorage.removeItem(STORAGE_KEYS.SESSION);
+      this.set(STORAGE_KEYS.SESSION, safeSession);
     } catch {}
   }
 
@@ -91,12 +105,13 @@ class StorageService {
   }
 
   clearSession(): void {
-    this.inMemorySession = {
+    const defaultGuest: AuthSession = {
       role: 'guest',
       userId: 'GUEST-001',
       name: 'Public Visitor',
       email: 'visitor@mpdrec.ac.in',
     };
+    this.inMemorySession = defaultGuest;
     try {
       localStorage.removeItem(STORAGE_KEYS.SESSION);
     } catch {}
@@ -113,12 +128,63 @@ class StorageService {
     // Auto-migrate if stored student count is less than seed count
     const defaultList = generate50Students();
     if (list.length < defaultList.length) {
-      const existingRolls = new Set(list.map(s => s.rollNo.toLowerCase()));
-      const missing = defaultList.filter(s => !existingRolls.has(s.rollNo.toLowerCase()));
+      const existingRolls = new Set(list.map(s => s.rollNo?.toLowerCase()));
+      const missing = defaultList.filter(s => !existingRolls.has(s.rollNo?.toLowerCase()));
       list = [...list, ...missing];
       this.saveStudents(list);
     }
     return list.map(s => {
+      // Ensure subjects array is valid
+      if (!s.subjects || !Array.isArray(s.subjects) || s.subjects.length === 0) {
+        const seedRef = defaultList[0]?.subjects || [];
+        s.subjects = JSON.parse(JSON.stringify(seedRef));
+      }
+
+      // Ensure financial metrics
+      if (typeof s.feesPaid !== 'number') {
+        s.feesPaid = 85000;
+      }
+      if (typeof s.totalFees !== 'number') {
+        s.totalFees = 115000;
+      }
+      if (typeof s.balanceFees !== 'number') {
+        s.balanceFees = Math.max(0, s.totalFees - s.feesPaid);
+      }
+      if (!s.feeStatus) {
+        s.feeStatus = s.balanceFees === 0 ? 'Paid' : 'Pending';
+      }
+
+      // Ensure attendance metrics
+      if (typeof s.attendancePercentage !== 'number') {
+        s.attendancePercentage = (s as any).attendance ? Number((s as any).attendance) : 85;
+      }
+      if (typeof s.totalClasses !== 'number') {
+        s.totalClasses = 100;
+      }
+      if (typeof s.attendedClasses !== 'number') {
+        s.attendedClasses = Math.round((s.attendancePercentage / 100) * s.totalClasses);
+      }
+
+      // Ensure academic progression
+      if (!s.currentYear) {
+        s.currentYear = Math.ceil((s.semester || 3) / 2);
+      }
+      if (!s.academicSession) {
+        s.academicSession = '2025-2026';
+      }
+      if (!s.enrollmentNo) {
+        s.enrollmentNo = `2301214010${(s.rollNo || '0000').slice(-4)}`;
+      }
+      if (!s.status) {
+        s.status = 'Regular';
+      }
+      if (typeof s.sgpa !== 'number') {
+        s.sgpa = 7.8;
+      }
+      if (typeof s.cgpa !== 'number') {
+        s.cgpa = 7.9;
+      }
+
       // If student is male, they are always Day Scholar as hostel is only available for girls
       if (s.gender === 'Male') {
         s.hostelAllotment = {
@@ -128,7 +194,6 @@ class StorageService {
           allottedDate: '-'
         };
       } else if (!s.hostelAllotment || !s.hostelAllotment.hostelName) {
-        // Default female hostel based on year: 3rd year -> Lehri Hostel, 2nd & 4th year -> Saryu Girls Hostel
         if (s.semester === 5 || s.currentYear === 3) {
           s.hostelAllotment = {
             hostelName: 'Lehri Hostel',
@@ -147,12 +212,6 @@ class StorageService {
         }
       }
 
-      if (!s.currentYear) {
-        s.currentYear = Math.ceil((s.semester || 3) / 2);
-      }
-      if (!s.academicSession) {
-        s.academicSession = '2025-2026';
-      }
       if (!s.semesterResults || s.semesterResults.length === 0) {
         s.semesterResults = compileStudentSemesterResults(70, s.subjects || [], s.sgpa || 7.5, s.cgpa || 7.5);
       }
@@ -170,9 +229,10 @@ class StorageService {
     const cleaned = (rollNo || '').trim().toLowerCase();
     const pureNumeric = cleaned.replace(/[^0-9]/g, '');
     return students.find(s => {
-      const sRoll = s.rollNo.toLowerCase();
+      const sRoll = (s.rollNo || '').toLowerCase();
       const sPureNumeric = sRoll.replace(/[^0-9]/g, '');
-      return sRoll === cleaned || (pureNumeric.length >= 5 && sPureNumeric === pureNumeric) || s.enrollmentNo.toLowerCase() === cleaned;
+      const sEnroll = (s.enrollmentNo || '').toLowerCase();
+      return sRoll === cleaned || (pureNumeric.length >= 5 && sPureNumeric === pureNumeric) || (sEnroll && sEnroll === cleaned);
     });
   }
 

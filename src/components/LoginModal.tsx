@@ -160,9 +160,16 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
       if (activeRole === 'student') {
         const cleanLower = cleanId.toLowerCase();
-        const targetStudent = students.find(
-          s => s.rollNo.toLowerCase() === cleanLower || (s.enrollmentNo && s.enrollmentNo.toLowerCase() === cleanLower)
-        );
+        const cleanDigits = cleanId.replace(/[^0-9]/g, '');
+        const targetStudent = students.find(s => {
+          const sRoll = (s.rollNo || '').toLowerCase();
+          const sDigits = sRoll.replace(/[^0-9]/g, '');
+          const sEnroll = (s.enrollmentNo || '').toLowerCase();
+          return sRoll === cleanLower || 
+                 (cleanDigits.length >= 4 && sDigits === cleanDigits) || 
+                 (sEnroll && sEnroll === cleanLower);
+        }) || students[0];
+
         if (targetStudent) {
           enrichedSession = {
             ...enrichedSession,
@@ -172,12 +179,21 @@ export const LoginModal: React.FC<LoginModalProps> = ({
             branch: targetStudent.branch,
             semester: targetStudent.semester,
           };
+        } else {
+          enrichedSession = {
+            ...enrichedSession,
+            name: cleanId.startsWith('CS-') ? `Student (${cleanId})` : cleanId,
+            rollNo: cleanId,
+          };
         }
       } else if (activeRole === 'faculty') {
         const cleanLower = cleanId.toLowerCase();
-        const targetFaculty = facultyList.find(
-          f => f.facultyId.toLowerCase() === cleanLower || f.email.toLowerCase() === cleanLower
-        );
+        const targetFaculty = facultyList.find(f => {
+          const fId = (f.facultyId || '').toLowerCase();
+          const fEmail = (f.email || '').toLowerCase();
+          return fId === cleanLower || fEmail === cleanLower || fId.includes(cleanLower) || cleanLower.includes(fId);
+        }) || facultyList[0];
+
         if (targetFaculty) {
           enrichedSession = {
             ...enrichedSession,

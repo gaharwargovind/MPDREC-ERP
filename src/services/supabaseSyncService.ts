@@ -90,7 +90,8 @@ class SupabaseSyncService {
       const { data: studentsData } = await supabase.from('students').select('*');
       if (studentsData && studentsData.length > 0) {
         storageService.saveStudents(studentsData as Student[]);
-        callbacks?.onStudentsUpdate?.(studentsData as Student[]);
+        const normalized = storageService.getStudents();
+        callbacks?.onStudentsUpdate?.(normalized);
       }
 
       // 3. Initial fetch of faculty
@@ -168,7 +169,8 @@ class SupabaseSyncService {
           const { data } = await supabase.from('students').select('*');
           if (data) {
             storageService.saveStudents(data as Student[]);
-            callbacks?.onStudentsUpdate?.(data as Student[]);
+            const normalized = storageService.getStudents();
+            callbacks?.onStudentsUpdate?.(normalized);
           }
         })
         .on('postgres_changes', { event: '*', schema: 'public', table: 'faculty' }, async () => {

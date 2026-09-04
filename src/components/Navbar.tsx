@@ -60,7 +60,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   setActiveTab,
   darkMode,
   setDarkMode,
-  notices,
+  notices = [],
   onResetData,
 }) => {
   const { 
@@ -252,7 +252,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div className="overflow-hidden whitespace-nowrap flex-1">
               <div className="animate-marquee inline-flex gap-8 sm:gap-12 font-medium text-[11px] sm:text-xs">
-                {notices.map((n, idx) => (
+                {(notices || []).map((n, idx) => (
                   <span key={n.id || idx} className="inline-flex items-center gap-2">
                     <span className="text-amber-400 font-bold">[{n.category}]</span> {n.title} — <span className="text-slate-300">{n.content.slice(0, 80)}...</span>
                     <span className="text-blue-300 font-mono text-[10px] sm:text-[11px]">({n.date})</span>
@@ -435,17 +435,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={() => setShowProfileMenu(true)}
                   className="flex items-center gap-1.5 sm:gap-2.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-blue-500 dark:hover:border-blue-400 transition-all shadow-xs shrink-0 group focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                   id="user-profile-menu-button"
-                  title={`Logged in as ${session.name} (${session.role})`}
+                  title={`Logged in as ${session?.name || 'User'} (${session?.role || 'guest'})`}
                 >
                   <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-200 border border-blue-300 dark:border-blue-700/80 flex items-center justify-center font-black text-xs shrink-0 shadow-2xs">
-                    {session.name.charAt(0).toUpperCase()}
+                    {(session?.name || 'User').charAt(0).toUpperCase()}
                   </div>
                   <div className="text-left min-w-0">
                     <div className="text-xs sm:text-sm font-extrabold leading-tight text-slate-900 dark:text-white truncate max-w-[70px] sm:max-w-[120px]">
-                      {session.name.split(' ')[0]}
+                      {(session?.name || 'User').split(' ')[0]}
                     </div>
-                    <div className={`text-[8.5px] sm:text-[9.5px] font-black px-1.5 py-0.5 rounded border uppercase inline-block leading-none tracking-wider ${roleColors[session.role]}`}>
-                      {session.role}
+                    <div className={`text-[8.5px] sm:text-[9.5px] font-black px-1.5 py-0.5 rounded border uppercase inline-block leading-none tracking-wider ${roleColors[session?.role] || roleColors.guest}`}>
+                      {session?.role || 'guest'}
                     </div>
                   </div>
                   <ChevronDown className="w-3.5 h-3.5 text-slate-600 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 shrink-0 transition-colors" strokeWidth={2.5} />
@@ -716,11 +716,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           />
           <div className="relative w-full max-w-xs sm:w-72 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-2 z-10 animate-in fade-in zoom-in-95 duration-150">
             <div className="p-3 border-b border-slate-100 dark:border-slate-800">
-              <p className="font-bold text-xs text-slate-900 dark:text-slate-100">{session.name}</p>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">{session.email}</p>
+              <p className="font-bold text-xs text-slate-900 dark:text-slate-100">{session?.name || 'User'}</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">{session?.email || ''}</p>
               <div className="mt-2 flex items-center justify-between">
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border uppercase ${roleColors[session.role]}`}>
-                  {session.role}
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border uppercase ${roleColors[session?.role] || roleColors.guest}`}>
+                  {session?.role || 'guest'}
                 </span>
                 {session.rollNo && (
                   <span className="text-[10px] font-mono text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-1.5 py-0.5 rounded">
@@ -889,11 +889,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <div className="flex items-center justify-between gap-2">
                       <div className="min-w-0">
                         <div className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">
-                          {session.name}
+                          {session?.name || 'User'}
                         </div>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded border uppercase ${roleColors[session.role]}`}>
-                            {session.role}
+                          <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded border uppercase ${roleColors[session?.role] || roleColors.guest}`}>
+                            {session?.role || 'guest'}
                           </span>
                           {session.rollNo && (
                             <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 truncate">
